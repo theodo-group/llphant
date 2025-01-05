@@ -23,4 +23,14 @@ class DocumentFixtures
 
         return $document;
     }
+
+    public static function documentWitEmbedding(string $content, array $embedding): Document
+    {
+        $document = new Document();
+        $document->content = $content;
+        $document->hash = \md5($document->content);
+        $document->embedding = $embedding;
+
+        return $document;
+    }
 }

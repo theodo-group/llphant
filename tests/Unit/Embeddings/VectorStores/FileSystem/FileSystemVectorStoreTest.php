@@ -8,6 +8,7 @@ use Tests\Fixtures\DocumentFixtures;
 use Tests\TestCase;
 
 describe('FileSystemVectorStore', function () {
+
     beforeEach(function (): void {
         /** @var TestCase $this */
         $this->fileSystemVectorStore = new FileSystemVectorStore();
@@ -17,6 +18,27 @@ describe('FileSystemVectorStore', function () {
     afterEach(function (): void {
         /** @var TestCase $this */
         $this->fileSystemVectorStore->deleteStore();
+    });
+
+    it('can add and retrieve documents', function () {
+        /** @var TestCase $this */
+        $this->fileSystemVectorStore->addDocuments([
+            DocumentFixtures::documentWitEmbedding('First example', [0.0, 0.0]),
+            DocumentFixtures::documentWitEmbedding('Second example', [10.0, 10.0])
+        ]);
+
+        $result = $this->fileSystemVectorStore->similaritySearch([11.0, 11.0], 1);
+        expect(\count($result))->toBe(1)
+            ->and($result[0]->content)->toBe('Second example');
+
+        $this->fileSystemVectorStore->addDocument(
+            DocumentFixtures::documentWitEmbedding('Third example', [10.5, 10.5]),
+        );
+
+        $result = $this->fileSystemVectorStore->similaritySearch([11.0, 11.0], 2);
+        expect(\count($result))->toBe(2)
+            ->and($result[0]->content)->toBe('Third example')
+            ->and($result[1]->content)->toBe('Second example');
     });
 
     it('can fetch documents by chunk range', function () {
