@@ -88,11 +88,18 @@ class DocumentUtils
     {
         $result = [];
         foreach ($contents as $content) {
-            $newDocument = new Document();
-            $newDocument->content = $content;
+            $newDocument = self::document($content);
             $result[] = $newDocument;
         }
 
         return $result;
+    }
+
+    public static function document(string $content): Document
+    {
+        $newDocument = new Document();
+        $newDocument->content = $content;
+
+        return $newDocument;
     }
 }

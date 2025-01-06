@@ -22,10 +22,11 @@ describe('FileSystemVectorStore', function () {
 
     it('can add and retrieve documents', function () {
         /** @var TestCase $this */
-        $this->fileSystemVectorStore->addDocuments([
+        $documents = [
             DocumentFixtures::documentWitEmbedding('First example', [0.0, 0.0]),
-            DocumentFixtures::documentWitEmbedding('Second example', [10.0, 10.0])
-        ]);
+            DocumentFixtures::documentWitEmbedding('Second example', [10.0, 10.0]),
+        ];
+        $this->fileSystemVectorStore->addDocuments($documents);
 
         $result = $this->fileSystemVectorStore->similaritySearch([11.0, 11.0], 1);
         expect(\count($result))->toBe(1)

@@ -24,7 +24,7 @@ class Chat extends Controller
         $filesVectorStore = new FileSystemVectorStore();
         $embeddingGenerator = new OpenAIADA002EmbeddingGenerator();
 
-        if ($filesVectorStore->getNumberOfDocuments() === 0) {
+        if (! $filesVectorStore->isEmpty()) {
             $dataReader = new FileDataReader(__DIR__.'/The_Star_H.G_Wells.txt');
             $documents = $dataReader->getDocuments();
             $splittedDocuments = DocumentSplitter::splitDocuments($documents, 2000);
